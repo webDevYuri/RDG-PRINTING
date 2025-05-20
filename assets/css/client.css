@@ -1,0 +1,37 @@
+body {
+      background: linear-gradient(to right, #a6d3ff, #e9fffe) !important;
+      height: 100vh;
+}
+
+.border-dashed {
+      border: 2px dashed #6c757d;
+}
+
+input[type="file"] {
+      display: none;
+}
+
+#customerUploadForm {
+      background-color: rgb(249, 249, 249);
+      border-radius: 0px !important;
+}
+
+input, select, button {
+      border-radius: 0px !important;
+      box-shadow: none !important;
+}
+
+#attachBtn {
+      border-radius: 0px !important;
+      box-shadow: none !important;
+}
+
+.small-text {
+  font-size: 10px;
+}
+
+@media (min-width: 768px) {
+  .small-text {
+    font-size: 15px;
+  }
+}
