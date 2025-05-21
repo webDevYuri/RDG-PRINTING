@@ -40,4 +40,3 @@ $topCustomers = [];
 while ($row = $resultTopCustomers->fetch_assoc()) {
     $topCustomers[] = ['name' => $row['name'], 'count' => $row['count']];
 }
-

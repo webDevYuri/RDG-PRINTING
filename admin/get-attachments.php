@@ -13,8 +13,12 @@ if (isset($_GET['id'])) {
         }
     }
 
+    $queryInstructions = "SELECT job_instructions FROM uploads WHERE id = $id";
+    $resultInstructions = $conn->query($queryInstructions);
+    $jobInstructions = $resultInstructions ? $resultInstructions->fetch_assoc()['job_instructions'] : null;
+
     header('Content-Type: application/json');
-    echo json_encode(['attachments' => $attachments]);
+    echo json_encode(['attachments' => $attachments, 'job_instructions' => $jobInstructions]);
     exit;
 }
 

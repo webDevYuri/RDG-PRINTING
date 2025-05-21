@@ -1,6 +1,5 @@
 body {
-      background: linear-gradient(to right, #a6d3ff, #e9fffe) !important;
-      height: 100vh;
+      background: linear-gradient(to right, #004a94, #136eb4) !important;
 }
 
 .border-dashed {
@@ -33,5 +32,11 @@ input, select, button {
 @media (min-width: 768px) {
   .small-text {
     font-size: 15px;
+  }
+}
+
+@media (min-width: 992px) {
+  .small-text {
+    font-size: 20px;
   }
 }

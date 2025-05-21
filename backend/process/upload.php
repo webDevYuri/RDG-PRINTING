@@ -10,12 +10,14 @@ $name    = trim($_POST['name']    ?? '');
 $email   = trim($_POST['email']   ?? '');
 $service = $_POST['service']      ?? '';
 $files   = $_FILES['attachFile']  ?? null;
+$jobInstructions = trim($_POST['job_instructions'] ?? '');
 
 $errors = [];
 
 if ($name === '')    $errors[] = 'Name is required.';
 if ($email === '')   $errors[] = 'Email is required.';
 if ($service === '') $errors[] = 'Service choice is required.';
+if ($jobInstructions === '') $errors[] = 'Job instructions are required.';
 if (empty($files) || $files['error'][0] === UPLOAD_ERR_NO_FILE) {
     $errors[] = 'You must attach at least one file.';
 }
@@ -41,10 +43,11 @@ if (!empty($errors)) {
 $nameEsc    = mysqli_real_escape_string($conn, $name);
 $emailEsc   = mysqli_real_escape_string($conn, $email);
 $serviceEsc = mysqli_real_escape_string($conn, $service);
+$jobInstEsc = mysqli_real_escape_string($conn, $jobInstructions);
 
 $sql = "
-  INSERT INTO `uploads` (`name`, `email`, `service`, `isActive`)
-  VALUES ('{$nameEsc}', '{$emailEsc}', '{$serviceEsc}', 1)
+  INSERT INTO `uploads` (`name`, `email`, `service`, `job_instructions`, `isActive`) 
+  VALUES ('{$nameEsc}', '{$emailEsc}', '{$serviceEsc}', '{$jobInstEsc}', 1) 
 ";
 
 if (!mysqli_query($conn, $sql)) {

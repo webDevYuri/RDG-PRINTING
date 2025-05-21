@@ -5,7 +5,13 @@ function fetchActiveCount() {
         dataType: 'json',
         success: function(data) {
             if (data.activeCount !== undefined) {
-                $('#activeCountBadge').text(data.activeCount); 
+                if (data.activeCount > 9) {
+                    $('#activeCountBadge').text('9+'); 
+                    $('#activeCountBadge').removeClass('rounded-circle');
+                } else {
+                    $('#activeCountBadge').text(data.activeCount); 
+                    $('#activeCountBadge').addClass('rounded-circle'); 
+                }
             }
         },
         error: function(xhr, status, error) {

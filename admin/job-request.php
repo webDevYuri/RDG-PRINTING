@@ -72,6 +72,17 @@ if ($result) {
     <script src="../node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: '<?php echo htmlspecialchars($_SESSION['error_message']); ?>',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
     <?php
         if (isset($_SESSION['success_message'])): ?>
             <script>
@@ -159,9 +170,12 @@ if ($result) {
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">Attachment</th>
                                                 <th class="text-center">Actions</th>
+                                                <th class="text-center">
+                                                    <button id="deleteSelected" class="btn btn-danger btn-sm">Delete</button>
+                                                </th>
                                             </tr>
                                         </thead>
-                                        <tbody id="jobRequestsTable">
+                                        <tbody id="jobRequestsTable" style="font-size: 14px">
                                             <?php foreach ($jobRequests as $request): ?>
                                                 <tr>
                                                     <td><?php echo htmlspecialchars($request['name']); ?></td>
@@ -176,26 +190,28 @@ if ($result) {
                                                         <?php endif; ?>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-secondary view-attachment" data-id="<?php echo $request['id']; ?>" data-customer-name="<?php echo htmlspecialchars($request['name']); ?>"  data-bs-toggle="modal" data-bs-target="#attachmentModal">View Attachment</button>
+                                                        <button class="btn btn-sm btn-outline-secondary view-attachment" data-id="<?php echo $request['id']; ?>" data-customer-name="<?php echo htmlspecialchars($request['name']); ?>"  data-bs-toggle="modal" data-bs-target="#attachmentModal">View Attachment</button>
                                                     </td>
                                                     <td class="text-center d-flex gap-2 align-items-center justify-content-center">
-                                                        <form method="POST" action="mark-as-done.php">
-                                                            <input type="hidden" name="id" value="<?php echo $request['id']; ?>">
-                                                            <input type="hidden" name="action" value="markAsDone">
-                                                            <?php if ($request['isActive']): ?>
-                                                                <button type="submit" class="btn btn-warning">Job Done</button>
-                                                            <?php else: ?>
-                                                                <button class="btn btn-warning" disabled>Job Done</button>
-                                                            <?php endif; ?>
-                                                        </form>
-                                                        <form method="POST" action="notify.php">
+                                                        <form method="POST" action="mark-as-done.php" class="action-form">
                                                             <input type="hidden" name="id" value="<?php echo $request['id']; ?>">
                                                             <?php if ($request['isActive']): ?>
-                                                                <button type="submit" name="action" value="notify" class="btn btn-primary" disabled>Notify</button>
+                                                                <button type="submit" name="action" value="markAsDone" class="btn btn-sm btn-warning confirm-action">Job Done</button>
                                                             <?php else: ?>
-                                                                <button type="submit" name="action" value="notify" class="btn btn-primary">Notify</button>
+                                                                <button type="submit" name="action" value="markAsDone" class="btn btn-sm btn-warning" disabled>Job Done</button>
+                                                            <?php endif; ?>
+                                                        </form>    
+                                                        <form method="POST" action="notify.php" class="action-form">
+                                                            <input type="hidden" name="id" value="<?php echo $request['id']; ?>">
+                                                            <?php if ($request['isNotified'] || $request['isActive']): ?>
+                                                                <button type="button" name="action" value="notify" class="btn btn-sm btn-primary" disabled>Notify</button>
+                                                            <?php else: ?>
+                                                                <button type="button" name="action" value="notify" class="btn btn-sm btn-primary confirm-action">Notify</button>
                                                             <?php endif; ?>
                                                         </form>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="checkbox" class="delete-checkbox" value="<?php echo $request['id']; ?>">
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -238,7 +254,7 @@ if ($result) {
 
     <div class="modal fade" tabindex="-1" id="attachmentModal">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content px-3">
             <div class="modal-header">
               <h5 class="modal-title">Attachments for <span class="text-capitalize badge bg-danger text-white" id="customerNameBadge"></span></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -257,6 +273,84 @@ if ($result) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/active-count.js"></script>
     <script>
+        document.querySelectorAll('.confirm-action').forEach(button => {
+            button.addEventListener('click', function(e){
+                e.preventDefault(); 
+
+                const form = this.closest('form');
+                const action = this.textContent.trim() === 'Job Done' ? 'mark as done' : 'send notification';
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Confirm ${action}.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'swal-confirm-button', 
+                        cancelButton: 'swal-cancel-button'    
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        document.getElementById('deleteSelected').addEventListener('click', function() {
+            const selectedIds = Array.from(document.querySelectorAll('.delete-checkbox:checked')).map(checkbox => checkbox.value);
+            
+            if (selectedIds.length === 0) {
+                Swal.fire('No selection', 'Please select at least one entry to delete.', 'warning');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to delete selected entries.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'swal-confirm-button', 
+                    cancelButton: 'swal-cancel-button'    
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('../backend/admin-process/delete-entries.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ ids: selectedIds })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Deleted!', 'Selected entries have been deleted.', 'success').then(() => {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 0100); 
+                            });
+                        } else {
+                            Swal.fire('Error!', 'There was an error deleting the entries.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Error!', 'There was an error deleting the entries.', 'error');
+                    });
+                }
+            });
+        });
+
         document.getElementById('logoutButton').addEventListener('click', function(event) {
             event.preventDefault(); 
             Swal.fire({
@@ -290,6 +384,13 @@ if ($result) {
                     .then(data => {
                         const modalBody = document.getElementById('attachmentModalBody');
                         modalBody.innerHTML = ''; 
+
+                        const jobInstructions = data.job_instructions ? data.job_instructions : 'No Instructions';
+                        modalBody.innerHTML += `<div class='d-flex flex-column mb-2'>
+                                                    <strong class='mb-2 text-uppercase' style='font-size: 24px'>Job Instructions:</strong> 
+                                                    <p style='font-size: 18px; line-height: 1.7; text-align: justify'>${jobInstructions}</p>
+                                                </div>`;
+
                         if (data.attachments && data.attachments.length > 0) {
                             let attachmentHtml = '<ul class="list-group">';
                             data.attachments.forEach(attachment => {
@@ -317,15 +418,15 @@ if ($result) {
 
                                 attachmentHtml += `
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>${icon} <a href="../uploads/${attachment.file_path}" target="_blank">${attachment.file_name}</a></span>
+                                        <span>${icon} <a href="../${attachment.file_path}" target="_blank">${attachment.file_name}</a></span>
                                         <button class="btn btn-sm btn-success" onclick="downloadFile('${attachment.file_path}', '${customerName}')">Download</button>
                                     </li>
                                 `;
                             });
                             attachmentHtml += '</ul>';
-                            modalBody.innerHTML = attachmentHtml;
+                            modalBody.innerHTML += attachmentHtml;
                         } else {
-                            modalBody.innerHTML = '<p>No attachments found.</p>';
+                            modalBody.innerHTML += '<p>No attachments found.</p>';
                         }
                     })
                     .catch(error => {
