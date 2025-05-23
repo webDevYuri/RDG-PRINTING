@@ -77,7 +77,7 @@ include '../backend/admin-process/dashboard-data.php';
                                 <div>
                                     <h6 class="text-muted mb-1">Passport Size</h6>
                                     <div class="d-flex align-items-end">
-                                        <h3 class="mb-0 me-2"><?php echo $todayCounts['passport']; ?></h3>
+                                        <h3 class="mb-0 me-2"><?php echo $todayCounts['passport size']; ?></h3>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +143,7 @@ include '../backend/admin-process/dashboard-data.php';
                                 <div>
                                     <h6 class="text-muted mb-1">Passport Size</h6>
                                     <div class="d-flex align-items-end">
-                                        <h3 class="mb-0 me-2"><?php echo $serviceCounts['passport']; ?></h3>
+                                        <h3 class="mb-0 me-2"><?php echo $serviceCounts['passport size']; ?></h3>
                                     </div>
                                 </div>
                             </div>

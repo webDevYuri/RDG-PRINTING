@@ -8,7 +8,7 @@ $result = $conn->query($query);
 $serviceCounts = [
     'print' => 0,
     '2x2' => 0,
-    'passport' => 0,
+    'passport size' => 0,
     '1x1' => 0,
 ];
 
@@ -22,7 +22,7 @@ $resultToday = $conn->query($queryToday);
 $todayCounts = [
     'print' => 0,
     '2x2' => 0,
-    'passport' => 0,
+    'passport size' => 0,
     '1x1' => 0,
 ];
 

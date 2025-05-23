@@ -3,24 +3,12 @@
   "WorkspaceRootPath": "C:\\xampp\\htdocs\\rdgprinting\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\jobrequest-data.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\admin-process\\jobrequest-data.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\assets\\css\\admin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\css\\admin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\mark-as-done.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\admin-process\\mark-as-done.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\admin\\job-request.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:admin\\job-request.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\get-attachments.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\admin-process\\get-attachments.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\notify.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\admin-process\\notify.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\rdgprinting\\admin\\index.php||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:admin\\index.php||{3B902123-F8A7-4915-9F01-361F908088D0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,67 +46,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "notify.php",
-              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\notify.php",
-              "RelativeDocumentMoniker": "backend\\admin-process\\notify.php",
-              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\notify.php",
-              "RelativeToolTip": "backend\\admin-process\\notify.php",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-20T09:17:07.793Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "mark-as-done.php",
-              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\mark-as-done.php",
-              "RelativeDocumentMoniker": "backend\\admin-process\\mark-as-done.php",
-              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\mark-as-done.php",
-              "RelativeToolTip": "backend\\admin-process\\mark-as-done.php",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAACAAAAAAAAAA==",
+              "Title": "index.php",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\admin\\index.php",
+              "RelativeDocumentMoniker": "admin\\index.php",
+              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\admin\\index.php",
+              "RelativeToolTip": "admin\\index.php",
+              "ViewState": "AgIAAMwAAAAAAAAAAAAAAPUAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-20T08:58:47.035Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "get-attachments.php",
-              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\get-attachments.php",
-              "RelativeDocumentMoniker": "backend\\admin-process\\get-attachments.php",
-              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\get-attachments.php",
-              "RelativeToolTip": "backend\\admin-process\\get-attachments.php",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-20T08:58:17.195Z",
+              "WhenOpened": "2025-05-22T04:14:27.537Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "jobrequest-data.php",
-              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\jobrequest-data.php",
-              "RelativeDocumentMoniker": "backend\\admin-process\\jobrequest-data.php",
-              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\backend\\admin-process\\jobrequest-data.php",
-              "RelativeToolTip": "backend\\admin-process\\jobrequest-data.php",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-20T08:38:52.558Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "job-request.php",
-              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\admin\\job-request.php",
-              "RelativeDocumentMoniker": "admin\\job-request.php",
-              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\admin\\job-request.php",
-              "RelativeToolTip": "admin\\job-request.php",
-              "ViewState": "AgIAAOwBAAAAAAAAAAAmwNoAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002338|",
-              "WhenOpened": "2025-05-20T08:36:05.513Z",
+              "Title": "admin.css",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\rdgprinting\\assets\\css\\admin.css",
+              "RelativeDocumentMoniker": "assets\\css\\admin.css",
+              "ToolTip": "C:\\xampp\\htdocs\\rdgprinting\\assets\\css\\admin.css",
+              "RelativeToolTip": "assets\\css\\admin.css",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAANIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-22T04:14:19.179Z",
               "EditorCaption": ""
             }
           ]

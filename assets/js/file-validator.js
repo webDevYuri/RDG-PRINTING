@@ -1,70 +1,83 @@
-const form = document.getElementById('customerUploadForm');
-const attachFile = document.getElementById('attachFile');
-const attachedFiledDiv = document.getElementById('attachedFiled');
-const nameInput = document.getElementById('floatingInputName');
-const emailInput = document.getElementById('floatingInputEmail');
-const serviceSelect = document.getElementById('floatingSelect');
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("attachFile");
+    const submitBtn = document.querySelector('form#customerUploadForm button[type="submit"]');
+    const attachedFiled = document.getElementById("attachedFiled");
+    const fileSizeInfo = document.getElementById("fileSizeInfo");
+    const maxTotalSize = 20 * 1024 * 1024; 
 
-attachFile.setAttribute('multiple', '');
+    let filesArray = [];
 
-const validExt = ['jpg','jpeg','png','doc','docx','pdf'];
+    function syncFileInput() {
+        const dataTransfer = new DataTransfer();
+        filesArray.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
 
-attachFile.addEventListener('change', () => {
-attachedFiledDiv.innerHTML = '';
-const files = Array.from(attachFile.files);
+    function getTotalSize(files) {
+        return files.reduce((acc, file) => acc + file.size, 0);
+    }
 
-for (let file of files) {
-      const ext = file.name.split('.').pop().toLowerCase();
-      if (!validExt.includes(ext)) {
-      Swal.fire({
-      icon: 'error',
-      title: 'Invalid file type',
-      text: `"${file.name}" is not allowed.\nPlease upload only JPEG, JPG, PNG, DOC, DOCX, or PDF.`,
-      });
-      attachFile.value = '';
-      attachedFiledDiv.innerHTML = '';
-      return;
-      }
-}
+    function updateSubmitButton() {
+        const totalSize = getTotalSize(filesArray);
+        const totalMB = (totalSize / (1024 * 1024)).toFixed(2);
+        fileSizeInfo.textContent = `Total selected file size: ${totalMB} MB`;
 
-files.forEach(file => {
-      const p = document.createElement('p');
-      p.className = 'border border-secondary rounded px-2 py-1 mb-1';
-      p.style.fontSize = '0.9em';
-      p.textContent = file.name;
-      attachedFiledDiv.appendChild(p);
-});
-});
+        if (totalSize > maxTotalSize) {
+            submitBtn.textContent = "Your attachment exceeds 20MB";
+            submitBtn.classList.add("btn-danger");
+            submitBtn.disabled = true;
+        } else if (filesArray.length === 0) {
+            submitBtn.textContent = "Submit";
+            submitBtn.classList.remove("btn-danger");
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.textContent = "Submit";
+            submitBtn.classList.remove("btn-danger");
+            submitBtn.disabled = false;
+        }
+    }
 
-form.addEventListener('submit', (e) => {
-e.preventDefault();
-let valid = true;
+    function renderFiles() {
+        attachedFiled.innerHTML = "";
+        filesArray.forEach((file, index) => {
+            const fileDiv = document.createElement("div");
+            fileDiv.className = "border rounded px-2 py-1 d-flex align-items-center gap-2";
+            fileDiv.style.cursor = "default";
 
-function checkField(el) {
-      if (!el.value.trim()) {
-      el.classList.add('is-invalid');
-      el.classList.remove('is-valid');
-      valid = false;
-      } else {
-      el.classList.remove('is-invalid');
-      el.classList.add('is-valid');
-      }
-}
+            const nameSpan = document.createElement("span");
+            nameSpan.textContent = `${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+            fileDiv.appendChild(nameSpan);
 
-const existingError = attachedFiledDiv.querySelector('.text-danger');
-if (existingError) existingError.remove();
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.innerHTML = "<i class='bi bi-x'></i>";
+            removeBtn.className = "btn btn-sm btn-danger ms-auto";
+            removeBtn.title = "Remove file";
 
-[nameInput, emailInput, serviceSelect].forEach(checkField);
+            removeBtn.addEventListener("click", () => {
+                filesArray.splice(index, 1);
+                syncFileInput(); 
+                renderFiles();
+                updateSubmitButton();
+            });
 
-if (!attachFile.files.length) {
-      const err = document.createElement('small');
-      err.className = 'text-danger';
-      err.textContent = 'Please attach at least one file.';
-      attachedFiledDiv.appendChild(err);
-      valid = false;
-}
+            fileDiv.appendChild(removeBtn);
+            attachedFiled.appendChild(fileDiv);
+        });
+    }
 
-if (valid) {
-      form.submit();
-}
+    fileInput.addEventListener("change", function () {
+        const newFiles = Array.from(fileInput.files);
+        newFiles.forEach(newFile => {
+            if (!filesArray.some(f => f.name === newFile.name && f.size === newFile.size)) {
+                filesArray.push(newFile);
+            }
+        });
+
+        syncFileInput();
+        renderFiles();
+        updateSubmitButton();
+    });
+
+    updateSubmitButton();
 });

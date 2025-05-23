@@ -202,13 +202,12 @@ body {
 }
 
 .pie-chart-wrapper {
-    height: 310px !important;       
-    width: 100%;        
+    height: 310px !important;              
     position: relative; 
   }
 
   .bar-chart-wrapper {
-    height: 310px !important;       
-    width: 100%;         
+    height: 310px !important;      
+    width: 100vw;
     position: relative; 
   }

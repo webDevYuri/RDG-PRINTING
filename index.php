@@ -30,8 +30,8 @@
         <small class="text-center text-sm fw-bold text-primary mt-1" id="fileSizeInfo"></small>
         <small class="text-center text-sm fw-bolder" id="maxFileSize">Max Size: 20mb</small>
         <div id="attachedFiled" class="d-flex flex-wrap gap-2 my-2"></div>
-        <p class="text-danger fw-bold" id="ImportantNotice">
-            <span class="fw-bolder">
+        <p class="text-danger fw-bold text-sm" id="ImportantNotice">
+            <span class="fw-bolder text-sm">
               IMPORTANT: 
             </span>
             Make sure your information is correct.
@@ -98,6 +98,22 @@
   </div>
 
 
+   <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
+  <script>
+        <?php
+        if (!empty($_SESSION['errors'])) {
+            $message = implode("<br>", $_SESSION['errors']);
+            echo "Swal.fire('Error', `$message`, 'error');";
+            unset($_SESSION['errors']);
+        }
+
+        if (!empty($_SESSION['success'])) {
+            echo "Swal.fire('Success', '{$_SESSION['success']}', 'success');";
+            unset($_SESSION['success']);
+        }
+        ?>
+  </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
       let bannedWords = [];
@@ -115,15 +131,38 @@
           ];
 
           inputsToCheck.forEach(input => {
+            const nameRegex = /^[a-zA-Z\s.'-]{2,}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
             input.addEventListener('input', () => {
-              const hasBannedWord = inputsToCheck.some(field => {
-                const value = field.value.toLowerCase();
-                return bannedWords.some(word => value.includes(word));
-              });
+              const nameValue = inputsToCheck[0].value.trim();
+              const emailValue = inputsToCheck[1].value.trim();
+              const instructionsValue = inputsToCheck[2].value.trim();
+
+              const hasBannedWord = bannedWords.some(word =>
+                nameValue.toLowerCase().includes(word) ||
+                emailValue.toLowerCase().includes(word) ||
+                instructionsValue.toLowerCase().includes(word)
+              );
+
+              const isNameValid = nameRegex.test(nameValue);
+              const isEmailValid = emailRegex.test(emailValue);
 
               if (hasBannedWord) {
                 $('#submitBtn')
                   .text('Remove inappropriate word')
+                  .prop('disabled', true)
+                  .removeClass('btn-primary')
+                  .addClass('btn-danger');
+              } else if (!isNameValid) {
+                $('#submitBtn')
+                  .text('Enter your real name')
+                  .prop('disabled', true)
+                  .removeClass('btn-primary')
+                  .addClass('btn-danger');
+              } else if (!isEmailValid) {
+                $('#submitBtn')
+                  .text('Enter a valid email')
                   .prop('disabled', true)
                   .removeClass('btn-primary')
                   .addClass('btn-danger');
@@ -135,198 +174,11 @@
                   .addClass('btn-primary');
               }
             });
-          });
-        }
-      });
-    </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("customerUploadForm");
-      const fileInput = document.getElementById("attachFile");
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const attachedFiled = document.getElementById("attachedFiled");
-      const maxTotalSize = 20 * 1024 * 1024;
-
-      let filesArray = [];
-
-      function getTotalSize(files) {
-        return files.reduce((acc, file) => acc + file.size, 0);
-      }
-      function updateSubmitButton() {
-        const totalSize = getTotalSize(filesArray);
-        const totalMB = (totalSize / (1024 * 1024)).toFixed(2);
-        const infoDiv = document.getElementById("fileSizeInfo");
-        infoDiv.textContent = `Total selected file size: ${totalMB} MB`;
-
-        if (totalSize > maxTotalSize) {
-          submitBtn.textContent = "Your attachment exceed max file allowed";
-          submitBtn.classList.add("btn-danger");
-          submitBtn.disabled = true;
-        } else if (filesArray.length === 0) {
-          submitBtn.textContent = "Submit";
-          submitBtn.classList.remove("btn-danger");
-          submitBtn.disabled = true; 
-        } else {
-          submitBtn.textContent = "Submit";
-          submitBtn.classList.remove("btn-danger");
-          submitBtn.disabled = false;
-        }
-      }
-
-      function renderFiles() {
-        attachedFiled.innerHTML = "";
-        filesArray.forEach((file, index) => {
-          const fileDiv = document.createElement("div");
-          fileDiv.className = "border rounded px-2 py-1 d-flex align-items-center gap-2";
-
-          fileDiv.style.cursor = "default";
-          fileDiv.style.position = "relative";
-
-          const nameSpan = document.createElement("span");
-          nameSpan.textContent = `${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
-          fileDiv.appendChild(nameSpan);
-
-          const removeBtn = document.createElement("button");
-          removeBtn.type = "button";
-          removeBtn.innerHTML = "<i class='bi bi-x'></i>";
-          removeBtn.className = "btn btn-sm btn-danger ms-auto";
-          removeBtn.style.lineHeight = "1";
-          removeBtn.style.padding = "0 6px";
-          removeBtn.title = "Remove file";
-
-          removeBtn.addEventListener("click", () => {
-            filesArray.splice(index, 1);
-            renderFiles();
-            updateSubmitButton();
-          });
-
-          fileDiv.appendChild(removeBtn);
-          attachedFiled.appendChild(fileDiv);
-        });
-      }
-
-      fileInput.addEventListener("change", function () {
-        const newFiles = Array.from(fileInput.files);
-        newFiles.forEach((newFile) => {
-          if (!filesArray.some(f => f.name === newFile.name && f.size === newFile.size)) {
-            filesArray.push(newFile);
-          }
-        });
-
-        renderFiles();
-        updateSubmitButton();
-        fileInput.value = "";
-      });
-
-      form.addEventListener("submit", function (e) {
-        if (filesArray.length === 0) {
-          e.preventDefault();
-          Swal.fire({
-            icon: "warning",
-            title: "No Files",
-            text: "Please attach at least one file before submitting.",
-            confirmButtonText: "Okay"
-          });
-          return;
-        }
-
-        const totalSize = getTotalSize(filesArray);
-        if (totalSize > maxTotalSize) {
-          e.preventDefault();
-          Swal.fire({
-            icon: 'error',
-            title: 'File Too Large',
-            text: 'Total file size exceeds 20MB. Please upload smaller or fewer files.',
-            confirmButtonText: 'Okay'
-          });
-          return;
-        }
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        formData.delete("attachFile[]");
-        filesArray.forEach((file) => formData.append("attachFile[]", file));
-
-        fetch(form.action, {
-          method: form.method,
-          body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Uploaded!',
-            text: 'Your files have been sent!',
-            confirmButtonText: 'Okay'
-          }).then(() => {
-            form.reset();
-            filesArray = [];
-            renderFiles();
-            updateSubmitButton();
-            window.history.replaceState({}, document.title, window.location.pathname);
-          });
-        })
-        .catch(error => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Upload failed',
-            text: 'There was an error uploading your files. Please try again.',
-            confirmButtonText: 'Okay'
-          });
-          console.error(error);
-        });
-      });
-
-      submitBtn.disabled = true;
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('customerUploadForm');
-      const attachFile = document.getElementById('attachFile');
-
-      form.addEventListener('submit', (event) => {
-        const requiredFields = form.querySelectorAll('[required]');
-        let allFilled = true;
-
-        requiredFields.forEach(field => {
-          if (!field.value.trim()) {
-            allFilled = false;
-          }
-        });
-
-        if (attachFile.files.length === 0) {
-          allFilled = false;
-        }
-
-        if (!allFilled) {
-          event.preventDefault();
-          Swal.fire({
-            icon: 'warning',
-            title: 'Missing Information',
-            text: 'Please fill in all required fields and attach at least one file.',
-            confirmButtonText: 'Okay'
-          });
-        }
-      });
-
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('upload') === 'success') {
-        Swal.fire({
-          icon: 'success',
-          title: 'Uploaded!',
-          text: 'Your files have been sent!',
-          confirmButtonText: 'Okay'
-        }).then(() => {
-        const newUrl = window.location.href.split('?')[0]; 
-        window.history.replaceState({}, document.title, newUrl); 
-      });
-      }
-    });
+          }); 
+        } 
+      }); 
   </script>
   <script src="assets/js/file-validator.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 </body>
 </html>

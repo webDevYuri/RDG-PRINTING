@@ -2,11 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\admin",
+    "\\assets",
+    "\\assets\\css",
     "\\assets\\js",
     "\\backend",
     "\\backend\\admin-process",
+    "\\backend\\process",
     "\\includes"
   ],
-  "SelectedNode": "\\backend\\admin-process\\dashboard-data.php",
+  "SelectedNode": "\\admin\\index.php",
   "PreviewInSolutionExplorer": false
 }

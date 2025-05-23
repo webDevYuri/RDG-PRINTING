@@ -440,7 +440,7 @@ if ($result) {
             const link = document.createElement('a');
             const randomNum = Math.floor(Math.random() * 10000);
             const fileName = `${customerName}_${randomNum}.${filePath.split('.').pop()}`; 
-            link.href = `../uploads/${filePath}`;
+            link.href = `../${filePath}`;
             link.download = fileName; 
             document.body.appendChild(link);
             link.click();
